@@ -10,7 +10,10 @@ A comprehensive guide to running **Stable Diffusion** with **Automatic1111’s W
 
 ## 🚧 Problem
 
-The Web UI for **Automatic1111** defaults to listening on `127.0.0.1:7860`, which limits access to localhost only. While adding the `--listen` attribute allows external connections, it can block certain extensions during installation.
+When Installing Stabble Diffusion Web UI Automatic1111 in Docekr, we have some limitation The Web UI for **Automatic1111** listening only `127.0.0.1:7860`, 
+which limits access to localhost only. 
+Solution is  adding the `--listen` attribute When Starting Web UI. after This Automatic1111 is runing on 0.0.0.0:7860 and allows connection from any source.
+But Here it can block certain extensions during installation.
 
 ## 💡 Solution
 
