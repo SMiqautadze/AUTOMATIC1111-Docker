@@ -118,5 +118,3 @@ Complete instructions are available in the [NVIDIA Container Toolkit installatio
 Now you can access **Stable Diffusion** at `http://localhost:3002` on your host machine, with traffic routed through **Nginx** on port `3002` to `127.0.0.1:7860` inside the container.
 
 ---
-
-This README is now more visually structured and easy to follow. Let me know if you'd like further customization!
