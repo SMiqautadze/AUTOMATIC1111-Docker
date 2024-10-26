@@ -1,7 +1,3 @@
-Here’s a polished and structured version of your content for the **README** file:
-
----
-
 # Stable Diffusion in Docker
 
 This guide helps users run **Stable Diffusion** in a Docker container on a host with an installed NVIDIA GPU.
