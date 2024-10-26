@@ -85,6 +85,9 @@ Complete instructions are available in the [NVIDIA Container Toolkit installatio
    ```bash
    sudo nvidia-ctk runtime configure --runtime=docker
    ```
+   ```bash
+   sudo systemctl restart docker
+   ```
    *Purpose*: Configures Docker to use the NVIDIA runtime.
 
    ```bash
