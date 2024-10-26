@@ -222,12 +222,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-## 📷 Screenshots
-
-*(Optional: Add screenshots of the Web UI or diagrams showing the architecture.)*
-
----
-
 **Note**: Replace placeholders like `<imagename>` and `<containername>` with your actual image and container names. Also, update the badge links at the top with your actual Docker Hub username and repository, and ensure the `LICENSE` file is included in your repository.
 
 ### Additional Enhancements
