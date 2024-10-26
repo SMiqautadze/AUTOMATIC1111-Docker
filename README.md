@@ -1,97 +1,122 @@
-# Stable Diffusion in Docker
-
-This guide helps users run **Stable Diffusion** in a Docker container on a host with an installed NVIDIA GPU.
-
-### Problem
-When setting up **Automatic1111's Stable Diffusion Web UI**, it defaults to listening on `127.0.0.1:7860`, which limits access to localhost only. Running the Web UI with the `--listen` attribute allows external connections, but it may restrict the installation of certain extensions.
-
-### Solution
-To work around this limitation:
-1. Install **Nginx** within the Docker container.
-2. Configure **Nginx** to redirect traffic from `3002` to `127.0.0.1:7860`.
-
-This setup enables:
-- **Nginx** to listen on port `3002` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
-- Accessing the Web UI externally via `http://localhost:3002`.
+Here's an enhanced and visually appealing version of your README, with port `3002` as requested.
 
 ---
 
-## Installation Process
+# Stable Diffusion in Docker with NVIDIA GPU 🖥️ 🚀
+
+A comprehensive guide to running **Stable Diffusion** with **Automatic1111’s Web UI** in a Docker container on a host equipped with an **NVIDIA GPU**.
+
+---
+
+## 🚧 Problem
+
+The Web UI for **Automatic1111** defaults to listening on `127.0.0.1:7860`, which limits access to localhost only. While adding the `--listen` attribute allows external connections, it can block certain extensions during installation.
+
+## 💡 Solution
+
+To enable external access without restricting extensions:
+1. Install **Nginx** within the Docker container.
+2. Configure **Nginx** to redirect traffic from port `3002` to `127.0.0.1:7860`.
+
+### This setup will:
+
+- Have **Nginx** listen on port `3002` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
+- Allow you to access the Web UI externally via `http://localhost:3002`, routing traffic through **Nginx** on port `3002` to the Web UI inside the container.
+
+---
+
+## 🛠️ Installation Process
 
 ### Prerequisites
-This guide assumes you're using **PopOS** (with pre-installed NVIDIA drivers). If not, install NVIDIA drivers before proceeding.
+
+Ensure **NVIDIA drivers** are installed on your host system. This guide assumes **PopOS** (with pre-installed NVIDIA drivers), but if you’re on a different OS, [install NVIDIA drivers](https://docs.nvidia.com/) as needed.
 
 ### Steps
 
-1. **Install NVIDIA Drivers on Host OS (if necessary)**:
-   - Follow the [NVIDIA driver installation guide](https://docs.nvidia.com/).
+### 1️⃣ Install NVIDIA Drivers (if necessary)
 
-2. **Install Docker on Host OS**:
-   - Follow the official [Docker installation guide](https://docs.docker.com/engine/install/).
+Refer to the [NVIDIA driver installation guide](https://docs.nvidia.com/).
 
-3. **Install NVIDIA Docker Toolkit on Host OS**:
-   - Follow the [NVIDIA Container Toolkit installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+### 2️⃣ Install Docker
+
+Follow the official [Docker installation guide](https://docs.docker.com/engine/install/).
+
+### 3️⃣ Install NVIDIA Docker Toolkit
+
+Complete instructions are available in the [NVIDIA Container Toolkit installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). Below are key steps:
 
 #### NVIDIA Toolkit Installation Commands
 
-   # **Add the NVIDIA GPG Key and Repository**:
-       ```bash
-       # Add the NVIDIA GPG key
-       curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-       ```
-       - *Purpose*: Downloads the NVIDIA GPG key, converts it to binary, and saves it to `/usr/share/keyrings/`.
+- **Add the NVIDIA GPG Key and Repository**
 
-       ```bash
-       # Add the NVIDIA package list with the signed GPG key
-       curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee 
-       /etc/apt/sources.list.d/nvidia-container-toolkit.list
-       ```
-      - *Purpose*: Adds the NVIDIA repository with the signed GPG key to the system's package list.
+   ```bash
+   # Add the NVIDIA GPG key
+   curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+   ```
+   *Purpose*: Downloads the NVIDIA GPG key, converts it to binary, and saves it to `/usr/share/keyrings/`.
 
-   # **Enable Experimental Packages in the NVIDIA Repo**:
-        ```bash
-        sudo sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
-        ```
-        - *Purpose*: Uncomments lines containing `experimental` in the NVIDIA repository to enable additional packages.
+   ```bash
+   # Add the NVIDIA package list with the signed GPG key
+   curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+   sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+   sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   ```
+   *Purpose*: Adds the NVIDIA repository with the signed GPG key to the system’s package list.
 
-   # **Install NVIDIA Container Toolkit**:
-        ```bash
-        sudo apt-get install -y nvidia-container-toolkit
-        ```
-        - *Purpose*: Installs the NVIDIA Container Toolkit, enabling Docker to use NVIDIA GPUs.
+- **Enable Experimental Packages in the NVIDIA Repo**
 
-   # **Configure NVIDIA Runtime for Docker**:
-        ```bash
-        sudo nvidia-ctk runtime configure --runtime=docker
-        ```
-        - *Purpose*: Configures Docker to use the NVIDIA runtime.
+   ```bash
+   sudo sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   ```
+   *Purpose*: Uncomments lines containing `experimental` in the NVIDIA repository to enable additional packages.
 
-        ```bash
+- **Install NVIDIA Container Toolkit**
+
+   ```bash
+   sudo apt-get install -y nvidia-container-toolkit
+   ```
+   *Purpose*: Installs the NVIDIA Container Toolkit, enabling Docker to use NVIDIA GPUs.
+
+- **Configure NVIDIA Runtime for Docker**
+
+   ```bash
+   sudo nvidia-ctk runtime configure --runtime=docker
+   ```
+   *Purpose*: Configures Docker to use the NVIDIA runtime.
+
+   ```bash
    # Optional configuration for user-specific daemon.json
-       nvidia-ctk runtime configure --runtime=docker --config=$HOME/.config/docker/daemon.json
-       ```
+   nvidia-ctk runtime configure --runtime=docker --config=$HOME/.config/docker/daemon.json
+   ```
 
-   # **Verify Installation**:
-       ```bash
-        nvidia-ctk -v
-        ```
-       - Expected output: "NVIDIA Container Toolkit CLI version 1.12.1"
+- **Verify Installation**
 
-### Docker Image Setup
+   ```bash
+   nvidia-ctk -v
+   ```
+   Expected output: "NVIDIA Container Toolkit CLI version 1.12.1"
 
-4. **Prepare Files**:
-   - Create a folder and place `Dockerfile` and `nginx.conf` from Repository inside created folder.
+### 4️⃣ Docker Image Setup
 
-5. **Build Docker Image**:
+- **Prepare Files**:  
+   Create a folder and place your `Dockerfile` and `nginx.conf` inside this folder.
+
+- **Build Docker Image**:
    ```bash
    sudo docker build -t <imagename> .
    ```
 
-6. **Run the Docker Image**:
+- **Run the Docker Image**:
    ```bash
-   sudo docker run -d --add-host=host.docker.internal:host-gateway --gpus all --name <imagename> --restart always -p 3002:3002 <imagename>:latest
+   sudo docker run -d -p 3002:3002 --gpus all <imagename>
    ```
 
-Now you can access **Stable Diffusion** at `http://localhost:3001` on your host machine, with traffic routed through **Nginx** on port `3002` to `127.0.0.1:7860` inside the container.
+---
 
---- 
+### Accessing the Web UI
+
+Now you can access **Stable Diffusion** at `http://localhost:3002` on your host machine, with traffic routed through **Nginx** on port `3002` to `127.0.0.1:7860` inside the container.
+
+---
+
+This README is now more visually structured and easy to follow. Let me know if you'd like further customization!
