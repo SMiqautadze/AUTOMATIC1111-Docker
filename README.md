@@ -12,7 +12,7 @@ To work around this limitation:
 
 This setup enables:
 - **Nginx** to listen on port `3002` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
-- Accessing the Web UI externally via `http://localhost:3001`.
+- Accessing the Web UI externally via `http://localhost:3002`.
 
 ---
 
