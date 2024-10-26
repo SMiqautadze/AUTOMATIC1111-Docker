@@ -111,7 +111,7 @@ Complete instructions are available in the [NVIDIA Container Toolkit installatio
 
 - **Run the Docker Image**:
    ```bash
-   sudo docker run -d -p 3002:3002 --gpus all <imagename>
+   sudo docker run -d --add-host=host.docker.internal:host-gateway --gpus all --name <containername> --restart always -p 3002:3002 <imagename>:latest
    ```
 
 ---
