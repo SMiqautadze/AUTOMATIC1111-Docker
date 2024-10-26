@@ -88,7 +88,7 @@ This guide assumes you're using **PopOS** (with pre-installed NVIDIA drivers). I
 
 6. **Run the Docker Image**:
    ```bash
-   sudo docker run -d -p 3002:3002 --gpus all <imagename>
+   sudo docker run -d --add-host=host.docker.internal:host-gateway --gpus all --name <imagename> --restart always -p 3002:3002 <imagename>:latest
    ```
 
 Now you can access **Stable Diffusion** at `http://localhost:3001` on your host machine, with traffic routed through **Nginx** on port `3002` to `127.0.0.1:7860` inside the container.
