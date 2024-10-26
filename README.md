@@ -11,7 +11,7 @@ To work around this limitation:
 2. Configure **Nginx** to redirect traffic from `3002` to `127.0.0.1:7860`.
 
 This setup enables:
-- **Nginx** to listen on port `3001` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
+- **Nginx** to listen on port `3002` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
 - Accessing the Web UI externally via `http://localhost:3001`.
 
 ---
