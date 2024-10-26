@@ -12,7 +12,7 @@ When setting up **Automatic1111's Stable Diffusion Web UI**, it defaults to list
 ### Solution
 To work around this limitation:
 1. Install **Nginx** within the Docker container.
-2. Configure **Nginx** to redirect traffic from `3001` to `127.0.0.1:7860`.
+2. Configure **Nginx** to redirect traffic from `3002` to `127.0.0.1:7860`.
 
 This setup enables:
 - **Nginx** to listen on port `3001` within the container and forward requests to the Web UI on `127.0.0.1:7860`.
@@ -92,10 +92,10 @@ This guide assumes you're using **PopOS** (with pre-installed NVIDIA drivers). I
 
 6. **Run the Docker Image**:
    ```bash
-   sudo docker run -d -p 3001:3001 --gpus all <imagename>
+   sudo docker run -d -p 3002:3002 --gpus all <imagename>
    ```
 
-Now you can access **Stable Diffusion** at `http://localhost:3001` on your host machine, with traffic routed through **Nginx** on port `3001` to `127.0.0.1:7860` inside the container.
+Now you can access **Stable Diffusion** at `http://localhost:3001` on your host machine, with traffic routed through **Nginx** on port `3002` to `127.0.0.1:7860` inside the container.
 
 --- 
 
